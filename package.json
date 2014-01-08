@@ -8,6 +8,8 @@
     "stylus": "*",
     "nib": "*",
     "mocha": "*",
-    "grunt": "*"
+    "grunt": "*",
+    "mongodb": "*",
+    "mongoose": "*"
   }
 }

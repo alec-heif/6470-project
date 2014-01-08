@@ -1,6 +1,9 @@
 var express = require('express'),
 	stylus = require('stylus'),
-	nib = require('nib');
+	nib = require('nib'),
+	mocha = require('mocha'),
+	grunt = require('grunt'),
+	mongoose = require('mongoose');
 
 var app = express();
 
