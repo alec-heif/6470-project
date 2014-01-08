@@ -1,7 +1,13 @@
 {
   "name" : "6.470SiteName",
   "version" : "0.0.1",
+  "private": "true",
   "dependencies" : {
-    "express" : "3.x"
+    "express" : "3.x",
+    "jade": "*",
+    "stylus": "*",
+    "nib": "*",
+    "mocha": "*",
+    "grunt": "*"
   }
 }
