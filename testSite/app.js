@@ -30,5 +30,8 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', index.display);
 app.post('/', index.process);
+app.use(function(req, res) {
+	res.render('404');
+});
 
 app.listen(3000);
