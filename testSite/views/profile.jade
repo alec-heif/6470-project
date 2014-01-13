@@ -1,0 +1,16 @@
+extends layout
+block append head
+	link(rel='stylesheet', href='/stylesheets/profile.css')
+block append content
+	.jumbotron#countertop
+		.container
+			.col-md-3.col-md-offset-1
+				ul.list-group
+					- for (var i = 0; i < 4; i++) {
+						li.list-group-item Item #{i} in pantry
+					- }
+			.col-md-3.col-md-offset-4
+				ul.list-group
+					- for (var i = 0; i < 4; i++) {
+						li.list-group-item Item #{i} in fridge
+					- }

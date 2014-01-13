@@ -21,7 +21,8 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(stylus.middleware( 
 	{
-		src: __dirname + '/public',
+		src: __dirname + '/views',
+		dest: __dirname + '/public',
 		compile: compile
 	}
 ));
@@ -30,8 +31,11 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', index.display);
 app.post('/', index.process);
+app.get('/profile', function(req, res) {
+	res.render('profile');
+})
 app.use(function(req, res) {
-	res.render('404');
+	res.status(404).render('404');
 });
 
 app.listen(3000);

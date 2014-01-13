@@ -1,0 +1,4 @@
+.jumbotron#countertop {
+  background: url("../images/kitchen.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
