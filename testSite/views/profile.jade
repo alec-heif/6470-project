@@ -4,13 +4,61 @@ block append head
 block append content
 	.jumbotron#countertop
 		.container
-			.col-md-3.col-md-offset-1
-				ul.list-group
-					- for (var i = 0; i < 4; i++) {
-						li.list-group-item Item #{i} in pantry
+			.row
+				.col-md-4
+					a.btn.btn-primary.btn-lg.btn-block(role='button')
+						p Submit Your Own Recipe!
+			.top-buffer
+			.row
+				.col-md-4
+					list-group
+						h2.text-center.list-group-item Your Fridge
+							.input-group.add-ingredient
+								input.text-center.form-control(type='text', placeholder="Found Something?")
+								span.input-group-btn
+									button.btn.btn-default(type='button') Add to Fridge!
+						- for (var i = 0; i < 5; i++) {
+							a.list-group-item(href='#')
+								p Item #{i} in Fridge
+									span.badge.pull-right Quantity: #{(i%3)+1}
+						- }
+						a.list-group-item.text-center.expand-down(href='#')
+							span.glyphicon.glyphicon-chevron-down.expand-down
+				.col-md-4.col-md-offset-4
+					list-group
+						h2.text-center.list-group-item Your Countertop
+							.input-group.add-ingredient
+								//input.text-center.form-control(type='text', placeholder="What's Cooking?")
+								span.input-group-btn
+									button.btn.btn-default(type='button') Grab from Fridge!
+						- for (var i = 0; i < 4; i++) {
+							a.list-group-item(href='#')
+								p Item #{i} on Countertop
+									span.badge.pull-right Quantity: #{i+1}
+						- }
+			.top-buffer
+			.row
+				.col-md-offset-3.col-md-6
+					a.btn.btn-primary.btn-lg.btn-block(role='button')
+						p Find Me Food!
+			.top-buffer
+			list-group
+				.col-md-10.col-md-offset-1
+					- var diff = ['Easy', 'Medium', 'Easy', 'Hard', 'Medium']
+					- var ratings = [5, 5, 4, 3, 2]
+					- for(var i = 0; i < 4; i++) {
+						a.list-group-item(href='#')
+							.row
+								.col-md-4
+									p Name of Recipe #{i}
+								.col-md-1
+									span.glyphicon.glyphicon-picture
+								.col-md-3
+									p Rating: 
+										- for( var j = 0; j < ratings[i]; j++) {
+											span.glyphicon.glyphicon-star
+										- }
+								.col-md-4
+									p Difficulty: #{diff[i]}
 					- }
-			.col-md-3.col-md-offset-4
-				ul.list-group
-					- for (var i = 0; i < 4; i++) {
-						li.list-group-item Item #{i} in fridge
-					- }
+

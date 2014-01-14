@@ -1,0 +1,9 @@
+extends layout
+block append head
+block append content
+	#formFrame
+		form#login(action='/login', method='POST')
+			input(name='username', type='text', placeholder='Username')
+			input(name='password', type='text', placeholder='Password')
+			input(type='submit', value='Login', name='button')
+		script(src='js/login.js')

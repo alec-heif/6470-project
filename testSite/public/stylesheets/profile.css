@@ -1,4 +1,29 @@
 .jumbotron#countertop {
-  background: url("../images/kitchen.jpg") no-repeat center center fixed;
+  background: url("../images/wood2.jpg") no-repeat center center fixed;
   background-size: cover;
+  margin-top: -20px;
+}
+.btn-large {
+  background-color: #008000;
+}
+.top-buffer {
+  margin-top: 30px;
+}
+.badge {
+  vertical-align: middle;
+  margin-top: 0.5em;
+}
+.expand-down {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  line-height: 30px;
+}
+.add-ingredient {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-top: 10px;
 }
