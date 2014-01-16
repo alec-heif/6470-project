@@ -1,10 +1,14 @@
 extends layout
+block append head
+	link(rel='stylesheet', href='/stylesheets/index.css')
 block append content
-	form#login(method='post')
-		input(type='text', name='user[name]')
-		input(type='text', name='user[password]')
-		input(type='submit', value='Submit')
-	script(src="js/index.js")
+	.jumbotron#countertop
+		.container
+			.row
+				.col-md-6.col-md-offset-3
+					input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
+	script(src='js/typeahead.min.js')
+	script(src='js/index.js')
 
 
 

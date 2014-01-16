@@ -1,0 +1,90 @@
+DATABASE
+	USERS
+		$email_address_1 -> String (primary key)
+			password: 
+				$password -> (hashed) String
+			recipes_written:
+				$recipe_id_1 -> int (foreign key)
+				$recipe_id_2 -> int
+				...
+			recipes_cooked:
+				$recipe_id_1 -> int
+					times_cooked:
+						$times -> int
+				$recipe_id_2 -> int
+					times_cooked:
+						$times -> int
+				...
+			fridge:
+				$ingredient_id_1 -> int (foreign key)
+					quantity:
+						unit:
+							$unit -> String
+						value:
+							$value -> float
+				$ingredient_id_2 -> int
+					quantity:
+						unit:
+							$unit -> String
+						value:
+							$value -> float
+				...
+		$email_address_2 -> String
+			password:
+				$password_2
+			...
+		...
+	INGREDIENTS
+		$ingredient_id_1 -> int (primary key)
+			name:
+				$name -> String
+			calories:
+				$calories -> int
+			serving_size:
+				unit:
+					$unit -> String (i.e. ounces, ml, pieces, etc)
+				value:
+					$value -> float (value of it i.e. the "4" in 4 oz.)
+			recipes:
+				$recipe_id_1 -> int (foreign key)
+					quantity:
+						unit:
+							$unit -> String
+						value:
+							$value -> float (could have 0.5 cups)
+				$recipe_id_2 -> int
+					...
+				...
+		$ingredient_id_2 -> int
+			name: 
+				$name -> String
+			...
+		...
+	RECIPES
+		$recipe_id_1 -> int (primary key)
+			name:
+				$name -> String
+			author:
+				$email_address_1 -> String (foreign key)
+			description:
+				$description -> String
+			users_cooked:
+				$email_address_1 -> String (foreign key)
+				$email_address_2 -> String
+				...
+			ingredients:
+				$ingredient_id_1 -> int (foreign key)
+					quantity:
+						unit:
+							$unit -> String
+						value:
+							$value -> float
+				$ingredient_id_2 -> int
+					...
+		$recipe_id_2 -> int
+			name:
+				$name -> String
+			...
+		...
+
+
