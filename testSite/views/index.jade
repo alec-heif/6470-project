@@ -2,11 +2,46 @@ extends layout
 block append head
 	link(rel='stylesheet', href='/stylesheets/index.css')
 block append content
+	.modal.fade#myModal
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+					h3.modal-title Modal title
+				.modal-body
+					form#loginAccount(action='/loginAccount', method='POST')
+						input(name='username', type='text', placeholder='Username')
+						input(name='password', type='text', placeholder='Password')
+						input(type='submit', value='Login', name='button')
+					form#createAccount(action='/createAccount', method='POST')
+						input(name='username', type='text', placeholder='Username')
+						input(name='password', type='text', placeholder='Password')
+						input(name='confirmPassword', type='text', placeholder='Confirm Password')
+						input(type='submit', value='Create Account', name='button')
+				.modal-footer
+					button.btn.btn-default(data-dismiss='modal', type='button') Close
+					button.btn.btn-primary(type='button') Save changes
+
 	.jumbotron#countertop
 		.container
 			.row
-				.col-md-6.col-md-offset-3
-					input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
+				.col-md-3.col-md-offset-9
+					button(type='button', data-toggle="modal", data-target="#myModal") Login/Create Account
+			.row
+				.col-md-8.col-md-offset-2
+					list-group
+						h2.text-center.list-group-item Your Fridge
+							.input-group.add-ingredient
+								input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
+								span.input-group-btn
+									button.btn.btn-default(type='button') Add to Fridge!
+						- for (var i = 0; i < 5; i++) {
+							a.list-group-item(href='#')
+								p Item #{i} in Fridge
+									span.badge.pull-right Quantity: #{(i%3)+1}
+						- }
+						a.list-group-item.text-center.expand-down(href='#')
+							span.glyphicon.glyphicon-chevron-down.expand-down
 	script(src='js/typeahead.min.js')
 	script(src='js/index.js')
 
