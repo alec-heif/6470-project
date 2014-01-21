@@ -9,39 +9,49 @@ block append content
 					button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
 					h3.modal-title Modal title
 				.modal-body
-					form#loginAccount(action='/loginAccount', method='POST')
-						input(name='username', type='text', placeholder='Username')
-						input(name='password', type='text', placeholder='Password')
-						input(type='submit', value='Login', name='button')
-					form#createAccount(action='/createAccount', method='POST')
-						input(name='username', type='text', placeholder='Username')
-						input(name='password', type='text', placeholder='Password')
-						input(name='confirmPassword', type='text', placeholder='Confirm Password')
-						input(type='submit', value='Create Account', name='button')
-				.modal-footer
-					button.btn.btn-default(data-dismiss='modal', type='button') Close
-					button.btn.btn-primary(type='button') Save changes
+					.loginSide.col-md-6
+						form#loginAccount(action='/loginAccount', method='POST')
+							input(name='username', type='text', placeholder='Username')
+							br
+							input(name='password', type='text', placeholder='Password')
+							br
+							input(type='submit', value='Login', name='button')
+							br
+					.createAccountSide.col-md-offset-6
+						form#createAccount(action='/createAccount', method='POST')
+							input(name='username', type='text', placeholder='Username')
+							br
+							input(name='password', type='text', placeholder='Password')
+							br
+							input(name='confirmPassword', type='text', placeholder='Confirm Password')
+							br
+							input(type='submit', value='Create Account', name='button')
 
 	.jumbotron#countertop
 		.container
 			.row
-				.col-md-3.col-md-offset-9
-					button(type='button', data-toggle="modal", data-target="#myModal") Login/Create Account
+				.col-md-6.col-md-offset-3.text-center
+					.header.text-center
+						h1.text-center EasyMake
+				.col-md-3.col-md-offset.2
+					a(href='#myModal', data-toggle = 'modal') Login/Create Account
+			.top-buffer-small
+			.call-to-action
+				.col-md-offset-6
+					h3 Tell us what ingredients you have and we'll tell you what you can cook!
 			.row
-				.col-md-8.col-md-offset-2
-					list-group
-						h2.text-center.list-group-item Your Fridge
-							.input-group.add-ingredient
-								input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
-								span.input-group-btn
-									button.btn.btn-default(type='button') Add to Fridge!
-						- for (var i = 0; i < 5; i++) {
-							a.list-group-item(href='#')
-								p Item #{i} in Fridge
-									span.badge.pull-right Quantity: #{(i%3)+1}
-						- }
-						a.list-group-item.text-center.expand-down(href='#')
-							span.glyphicon.glyphicon-chevron-down.expand-down
+				.col-md-6.col-md-offset-3
+					.input-group.add-ingredient
+						input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
+						span.input-group-btn
+							button.btn.btn-default(type='button') Use Ingredient
+			.top-buffer-small
+			//.row
+			//
+				.col-md-offset-3.col-md-6
+					a.btn.btn-primary.btn-lg.btn-block(role='button')
+						p Find Me Food!
+			.top-buffer-large
 	script(src='js/typeahead.min.js')
 	script(src='js/index.js')
 

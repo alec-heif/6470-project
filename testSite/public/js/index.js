@@ -8,7 +8,7 @@ $(document).ready(function(req, res) {
 	});
 	$('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
 	$('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');  
-	//$('.tt-query').css('background-color','#fff');                                                 
+	$('.tt-hint').css('top','16px');                                                 
 });
 
 $(window).load(function() {

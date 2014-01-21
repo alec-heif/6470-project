@@ -26,6 +26,12 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 	})
 }
 
+
+
+
+
+
+
 exports.createAccount = function (req, res, dbRef, bcrypt) {
 	var validator = require('validator');
 	var email = validator.toString(req.body.username);
@@ -50,11 +56,13 @@ exports.createAccount = function (req, res, dbRef, bcrypt) {
 		else {
 			bcrypt.hash(password, 8, function(err, hash) {
 				req.session.user_id = escaped_email;
-				user.set({'password': hash});
+				user.set({'password': hash, recipes_written: [], recipes_cooked: [], });
 				res.send('SUCCESS');
 			});
 		}
-	})
+	});
+
+
 }
 
 // Replaces '.' (not allowed in a Firebase key) with ','

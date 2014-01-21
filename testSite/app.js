@@ -16,6 +16,10 @@ var processFood = require('./resources/processFood.js')
 
 var dbRef = new firebase('https://whatsinmyfridge.firebaseIO.com/');
 
+var users = dbRef.child('USERS');
+
+
+
 var app = express();
 
 function compile(str, path) {
@@ -48,7 +52,6 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
 	res.render('index');
 });
-app.post('/', index.process);
 
 app.get('/profile', function(req, res) {
 	res.render('profile');
