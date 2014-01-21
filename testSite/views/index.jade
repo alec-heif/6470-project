@@ -37,8 +37,25 @@ block append content
 					a(href='#myModal', data-toggle = 'modal') Login/Create Account
 			.top-buffer-small
 			.call-to-action
-				.col-md-offset-6
-					h3 Tell us what ingredients you have and we'll tell you what you can cook!
+				h1.center.text-center Tell us what you have.
+				h1.center.text-center We'll tell you what you can make.
+			.results_container
+				list-group.ingredient_results
+					.col-md-10.col-md-offset-1
+						a.list-group-item(href='#')
+								.row
+									.col-md-4
+										p Name of Recipe #{i}
+									.col-md-1
+										span.glyphicon.glyphicon-picture
+									.col-md-3
+										p Rating: 
+											- for( var j = 0; j < ratings[i]; j++) {
+												span.glyphicon.glyphicon-star
+											- }
+									.col-md-4
+										p Difficulty: #{diff[i]}
+
 			.row
 				.col-md-6.col-md-offset-3
 					.input-group.add-ingredient

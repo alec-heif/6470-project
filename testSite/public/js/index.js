@@ -35,5 +35,7 @@ $(document).ready(function(req, res) {
 		var input = $(this).serialize();
 		$.post('createAccount', input, process);
 
-	})
+	});
 });
+
+
