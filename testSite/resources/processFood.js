@@ -11,16 +11,18 @@ module.exports = function processFood() {
 
 	    // Loop through each element
 	    data.forEach(function(d,i){
-	    	if(i == 0) console.log(d);
+	    	if(i == 0)
+	    		console.log(d);
 	        // decide which parts of the object you'd like to keep
 	        var element = {
 	            name: d.description,
 	            group: d.group,
-	            id: i
+	            id: i,
+	            portions: d.portions
 	        };
 
 	        var BreakException = {};
-
+			
 	        try {
 		        d.nutrients.forEach(function(n,i){
 		            if ( n.description.indexOf("Energy") == 0 && n.units.indexOf("kcal") === 0) {

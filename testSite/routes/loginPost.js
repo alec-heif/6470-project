@@ -13,6 +13,8 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 	user.once('value', function(snapshot) {
 		if(snapshot.val() === null) {
 			data.email = "Email does not exist.";
+			res.send(data);
+			return;
 		}
 		else {
 			bcrypt.compare(password, snapshot.val().password, function(err, result) {
@@ -21,25 +23,19 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
     				data.success = "Success!";
 				}
 				else {
+					console.log('pass fail');
 					data.password = "Incorrect password.";
 				}
 				res.send(data);
 
 			});
 		}
-		res.send(data);
 	});
 }
 
 exports.addIngredient = function(req, res) {
 	var ingredients = dbRef.child('INGREDIENTS')
 }
-
-
-
-
-
-
 
 exports.createAccount = function (req, res, dbRef, bcrypt) {
 	var validator = require('validator');
@@ -64,15 +60,17 @@ exports.createAccount = function (req, res, dbRef, bcrypt) {
 	user.once('value', function(snapshot) {
 		if(snapshot.val() !== null) {
 			data.email = "Email address taken."
+			res.send(data);
+			return;
 		}
 		else {
 			bcrypt.hash(password, 8, function(err, hash) {
 				req.session.user_id = escaped_email;
 				user.set({'password': hash, recipes_written: [], recipes_cooked: [], });
 				data.success = "Success!";
+				res.send(data);
 			});
 		}
-		res.send(data);
 	});
 
 

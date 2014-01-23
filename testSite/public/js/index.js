@@ -30,7 +30,7 @@ function loginProcess(data, status) {
 
 	$('#messages').removeClass('alert alert-success').empty();
 
-	if ( !data.success) {
+	if (!data.success) {
 		if (data.invalid) {
 			$('#loginUser').addClass('has-error');
 			$('#loginUser .help-block').html(data.invalid);
@@ -39,7 +39,6 @@ function loginProcess(data, status) {
 			$('#loginUser').addClass('has-error');
 			$('#loginUser .help-block').html(data.email);
 		}
-
 		else if (data.password) {
 			$('#loginPassword').addClass('has-error');
 			$('#loginPassword .help-block').html(data.password);

@@ -21,6 +21,11 @@ var users = dbRef.child('USERS');
 
 var app = express();
 
+/*grabNutrition.grabNutrition();
+grabNutrition.removeInvalidFoods();
+grabNutrition.fillNutritionInfo();
+grabNutrition.createIdTable();*/
+
 function compile(str, path) {
 	return stylus(str)
 		.set('filename', path)

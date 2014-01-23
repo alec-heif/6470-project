@@ -1,4 +1,3 @@
-'use strict';
 module.exports.grabNutrition = function grabNutrition() {
 	var fs = require('fs');
 
@@ -25,7 +24,7 @@ module.exports.grabNutrition = function grabNutrition() {
 	    		console.log(i)
 		    });
 
-		    fs.writeFile( './resources/final_table.json', JSON.stringify(output, null, 4), function(err){
+		    fs.writeFile( './resources/combined_table.json', JSON.stringify(output, null, 4), function(err){
 		        if ( err ) throw err;
 		        console.log('ok');
 		    });
@@ -35,6 +34,7 @@ module.exports.grabNutrition = function grabNutrition() {
 
 function findName(occurences, food_data, curr_name, i) {
 	var max_length = 10000;
+	var max_index_length = 10000;
 	var curr_id = -1;
 	food_data.forEach(function(curr_val,j) {
 		var count = 0;
@@ -43,13 +43,18 @@ function findName(occurences, food_data, curr_name, i) {
 			console.log(possible_name);
 			console.log(curr_name);
 		}*/
+		var curr_if = 0;
 		curr_name.forEach(function(curr_word, k) {
+			curr_if = 0;
 			if(possible_name.indexOf(curr_word) !== -1) {
 				count++;
+				curr_if += possible_name.indexOf(curr_word);
 			}
+			curr_if /= (count * 1.0);
 		});
-		if(count >= occurences && possible_name.length <= max_length) {
+		if(count >= occurences && possible_name.length <= max_length && curr_if <= max_index_length) {
 			max_length = possible_name.length;
+			max_index_length = curr_if;
 			curr_id = j;
 		}
 	});
@@ -74,7 +79,7 @@ module.exports.removeInvalidFoods = function removeInvalidFoods() {
 	    var foods = JSON.parse(data);
 
 	    foods.forEach(function(curr,i) {
-	    	if(curr.id !== -1) {
+	    	if(curr.id !== -1 && curr.name !== "") {
 	    		var element = {
 	    			name: curr.name,
 	    			id: curr.id
@@ -105,12 +110,6 @@ module.exports.fillNutritionInfo = function fillNutritionInfo() {
 
 
 		    food_names.forEach(function(curr_name,i) {
-		    	if(curr_name.name == "") {
-		    		return;
-		    	}
-		    	if(i > 212) {
-		    		i = i-1;
-		    	}
 		    	var element = {
 		    		name: curr_name.name,
 		    		id: i
@@ -121,6 +120,7 @@ module.exports.fillNutritionInfo = function fillNutritionInfo() {
 	    		element.protein = match.protein;
 	    		element.fat = match.fat;
 	    		element.carbs = match.carbs;
+	    		element.portions = match.portions[0];
 	    		element.overall_id = curr_name.id;
 	    		output.push(element);
 		    });
@@ -133,7 +133,7 @@ module.exports.fillNutritionInfo = function fillNutritionInfo() {
 	});
 }
 
-module.exports.createIdTable = function removeInvalidFoods() {
+module.exports.createIdTable = function createIdTable() {
 	var fs = require('fs');
 
 	// open the file
@@ -150,9 +150,8 @@ module.exports.createIdTable = function removeInvalidFoods() {
 	    	element.carbs = curr.carbs;
 	    	element.id = i;
 	    	element.overall_id = curr.overall_id;
-	    	element
+	    	element.portions = curr.portions;
 	    	output[curr.name] = element;
-
 	    });
 
 	    fs.writeFile( './resources/name_table.json', JSON.stringify(output, null, 4), function(err){
