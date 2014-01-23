@@ -12,13 +12,12 @@ var express = require('express'),
 var index = require('./routes/indexController');
 var login = require('./routes/loginPost');
 
-var processFood = require('./resources/processFood.js')
+var grabNutrition = require('./resources/grabNutrition.js');
+var processFoods = require('./resources/processFood.js');
 
 var dbRef = new firebase('https://whatsinmyfridge.firebaseIO.com/');
 
 var users = dbRef.child('USERS');
-
-
 
 var app = express();
 
@@ -67,6 +66,10 @@ app.post('/loginAccount', function(req, res) {
 
 app.post('/createAccount', function(req, res) {
 	login.createAccount(req, res, dbRef, bcrypt);
+});
+
+app.post('/addIngredient', function(req, res) {
+	login.addIngredient(req, res, dbRef, bcrypt);
 });
 
 app.use(function(req, res) {

@@ -1,37 +1,89 @@
+font-color = #f9f3d1
+font-size = 24px
 .header
+    color font-color
+    h2
+        margin-top 0px
+        font-size 35px
+        margin-bottom 50px
     h1
         font-family "Helvetica"
         font-weight bold
-        color #CCCCCC
+        color font-color
         letter-spacing -5px
         font-size 100px
-        line-height 250px
+        line-height 150px
+        margin-bottom 0px
+        margin-top 25px
+    h3
+        color font-color
+.login
+    a
+        color white
+        background-color #2c4762
+        border-color #2c4762
+        background-image none
+        box-shadow none
+        float right
+        &:hover
+            background-color #e38d13
+            background-image none
 
 .twitter-typeahead 
+    height 64px
     .tt-hint
         display block
-        height 34px
+        //height 34px
+        height 64px
         padding 4px 12px
-        font-size 14px
+        font-size font-size
         line-height 1.428571429
         border 1px solid transparent
-        border-radius 4px
         color silver
         margin-bottom 0
         width 100%
         top 16px
+        border-top-left-radius 4px
+        border-bottom-left-radius 4px
+        background-color font-color
+
     .tt-query
         margin-bottom 0
+        background-color font-color
+
+
+    .form-control
+        height 64px
+        font-size 24px
+        border-color transparent
+        background-color font-color
+
     width 100%
     padding-top 16px
 
+.modal-body
+    border-color transparent
+    input
+        width 80%
+        margin : 0 auto;
+    span
+        text-align left
+        font-size 16px
+        padding-left 26px
+        padding-top 0px
+        padding-bottom 0px
+        margin-top 0px
+        margin-bottom 0px
+        line-height 1.5px
+    
 .tt-dropdown-menu 
     min-width 160px
-    margin-top 2px
+    margin-top 15px
     padding 5px 0
     background-color #fff
     border 1px solid #ccc
     width 100%   
+    font-size 24px
     *border-right-width: 2px;
     *border-bottom-width: 2px;
     -webkit-border-radius: 6px;
@@ -63,16 +115,33 @@
     a
         color #fff
 
+#content
+    min-height 100%
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -20px;
 .jumbotron#countertop
+    min-height 100%
+    padding-top 30px
+    height: 100%
+    margin-bottom 0px
     background url('../images/wood2.jpg') no-repeat center center fixed
     background-size cover
-    margin-top -20px
+    .container
+        overflow hidden
+
 .btn-large
     background-color green
 .top-buffer-large
     margin-top 700px
+    line-height 700px
+    //padding-bottom 200px
 .top-buffer-small
     margin-top 50px
+    line-height 50px
+.top-buffer-really-small
+    margin-top 25px
+    line-height 25px
 .badge
     vertical-align middle 
     margin-top 0.5em
@@ -88,8 +157,32 @@
     margin-left 0px
     margin-right 0px
     padding-top 10px
+    .input-group-btn
+        padding-top 16px
+        .btn
+            font-size 24px
+            height 64px
+            background-color #2c4762
+            border-color #2c4762
+            background-image none
+            box-shadow none
+            &:hover
+                background-color #e38d13
+                background-image none
+
 .call-to-action
-    h1
-        color: #AAAAAA
+    color: font-color
+a.list-group-item
+    color white
+    background-color transparent
+    border-color transparent
+body
+    min-height 100%
+    background url('../images/wood2.jpg') no-repeat center center fixed
+    background-size cover
+html
+    min-height 100%
+    height 100%
+
 
 

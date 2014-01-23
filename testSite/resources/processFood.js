@@ -15,17 +15,25 @@ module.exports = function processFood() {
 	        // decide which parts of the object you'd like to keep
 	        var element = {
 	            name: d.description,
-	            group: d.group
+	            group: d.group,
+	            id: i
 	        };
 
 	        var BreakException = {};
 
-	        // for example here I'm just keeping vitamins
 	        try {
 		        d.nutrients.forEach(function(n,i){
-		            if ( n.description.indexOf("Energy") == 0 && n.units.indexOf("kcal") == 0) {
+		            if ( n.description.indexOf("Energy") == 0 && n.units.indexOf("kcal") === 0) {
 		            	element.calories = n.value;
-		            	throw BreakException;
+		            }
+		            else if(n.description.indexOf('Carbohydrate, by difference') === 0) {
+		            	element.carbs = n.value;
+		            }
+		            else if(n.description.indexOf('Total lipid (fat)') === 0) {
+		            	element.fat = n.value;
+		            }
+		            else if(n.description.indexOf('Protein') === 0) {
+		            	element.protein = n.value;
 		            }
 		        });
 		    }
@@ -36,7 +44,7 @@ module.exports = function processFood() {
 	        output.push(element);
 	    });
 
-	    fs.writeFile( './resources/output.json', JSON.stringify(output, null, 4), function(err){
+	    fs.writeFile( './resources/simple_foods_with_id.json', JSON.stringify(output, null, 4), function(err){
 	        if ( err ) throw err;
 	        console.log('ok');
 	    });

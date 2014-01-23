@@ -2,72 +2,81 @@ extends layout
 block append head
 	link(rel='stylesheet', href='/stylesheets/index.css')
 block append content
-	.modal.fade#myModal
-		.modal-dialog
-			.modal-content
-				.modal-header
-					button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-					h3.modal-title Modal title
-				.modal-body
-					.loginSide.col-md-6
-						form#loginAccount(action='/loginAccount', method='POST')
-							input(name='username', type='text', placeholder='Username')
-							br
-							input(name='password', type='text', placeholder='Password')
-							br
-							input(type='submit', value='Login', name='button')
-							br
-					.createAccountSide.col-md-offset-6
-						form#createAccount(action='/createAccount', method='POST')
-							input(name='username', type='text', placeholder='Username')
-							br
-							input(name='password', type='text', placeholder='Password')
-							br
-							input(name='confirmPassword', type='text', placeholder='Confirm Password')
-							br
-							input(type='submit', value='Create Account', name='button')
-
 	.jumbotron#countertop
+		.modal.fade#myModal
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+						h3.modal-title.text-center Login or Sign Up!
+					.messages
+					.modal-body.row
+						.loginSide.col-md-6.text-center
+							form#loginAccount(action='/loginAccount', method='POST')
+								#loginUser.form-group
+									input.form-control(name='username', type='text', placeholder='Email')
+									span.help-block
+								#loginPassword.form-group
+									input.form-control(name='password', type='password', placeholder='Password')
+									span.help-block
+								input(type='submit', value='Login', name='button')
+						.createAccountSide.col-md-6.text-center
+							form#createAccount(action='/createAccount', method='POST')
+								#createUser.form-group
+									input.form-control(name='username', type='text', placeholder='Email')
+									span.help-block
+								#createPassword.form-group
+									input.form-control(name='password', type='password', placeholder='Password')
+									span.help-block
+								#createConfirm.form-group
+									input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
+									span.help-block
+								input(type='submit', value='Sign Up', name='button')
 		.container
-			.row
-				.col-md-6.col-md-offset-3.text-center
-					.header.text-center
-						h1.text-center EasyMake
-				.col-md-3.col-md-offset.2
-					a(href='#myModal', data-toggle = 'modal') Login/Create Account
-			.top-buffer-small
-			.call-to-action
-				h1.center.text-center Tell us what you have.
-				h1.center.text-center We'll tell you what you can make.
+			.col-md-10.col-md-offset-1
+				.row
+					.col-md-6.col-md-offset-3.text-center
+						.header.text-center
+							h1.text-center EasyMake
+							h2.text-center Healthy cooking made easy
+					.col-md-3
+						.login
+							a.btn.btn-warning(href='#myModal', data-toggle = 'modal') Login/Create Account
 			.results_container
-				list-group.ingredient_results
-					.col-md-10.col-md-offset-1
-						a.list-group-item(href='#')
-								.row
-									.col-md-4
-										p Name of Recipe #{i}
-									.col-md-1
-										span.glyphicon.glyphicon-picture
-									.col-md-3
-										p Rating: 
-											- for( var j = 0; j < ratings[i]; j++) {
-												span.glyphicon.glyphicon-star
-											- }
-									.col-md-4
-										p Difficulty: #{diff[i]}
+				.col-md-10.col-md-offset-1
+					.entered_ingredients
+						.row
+							.col-md-1#quantity
+							.col-md-1#plusSign
+							.col-md-8#ingredientName
+							.col-md-2#calories
+					form#ingredientForm
+						.input-group.add-ingredient
+							input.ing_typeahead.form-control#addIngredient(type='text', placeholder="What's Cooking?", autocomplete="off")
+							span.input-group-btn
+								button.btn.btn-warning(type='submit') Use Ingredient
+					.top-buffer-small
+					.top-buffer-small
+					.call-to-action
+						.row.text-center
+							.col-md-4
+								h2 Tell Us
+								p what ingredients you have by entering them into the search bar.
+							.col-md-4
+								h2 Let Us
+								p find you the most nutritious recipes you can make right now.
+							.col-md-4
+								h2 Join Us
+								p by <a href="#myModal" data-toggle="modal">signing up</a> for an account so you can submit recipes and get feedback on your creations!
+				.top-buffer-really-small
 
-			.row
-				.col-md-6.col-md-offset-3
-					.input-group.add-ingredient
-						input.ing_typeahead.form-control(type='text', placeholder="What's Cooking?")
-						span.input-group-btn
-							button.btn.btn-default(type='button') Use Ingredient
 			.top-buffer-small
 			//.row
 			//
 				.col-md-offset-3.col-md-6
 					a.btn.btn-primary.btn-lg.btn-block(role='button')
 						p Find Me Food!
+			.top-buffer-large
 			.top-buffer-large
 	script(src='js/typeahead.min.js')
 	script(src='js/index.js')
