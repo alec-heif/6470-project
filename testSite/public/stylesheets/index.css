@@ -186,6 +186,21 @@
   background-color: #e38d13;
   background-image: none;
 }
+.entered_ingredients {
+  color: #f9f3d1;
+  font-size: 20px;
+}
+.entered_ingredients .ingredient_quantity {
+  padding-right: 25px;
+}
+.entered_ingredients .quantityAdder {
+  cursor: pointer;
+}
+.recipes_returned {
+  color: #f9f3d1;
+  font-size: 30px;
+  text-align: center;
+}
 .call-to-action {
   color: #f9f3d1;
 }

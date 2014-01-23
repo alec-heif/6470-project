@@ -14,6 +14,8 @@ var login = require('./routes/loginPost');
 
 var grabNutrition = require('./resources/grabNutrition.js');
 var processFoods = require('./resources/processFood.js');
+var generateRecipes = require('./resources/my_generator_algorithm.js');
+
 
 var dbRef = new firebase('https://whatsinmyfridge.firebaseIO.com/');
 
@@ -23,8 +25,10 @@ var app = express();
 
 /*grabNutrition.grabNutrition();
 grabNutrition.removeInvalidFoods();
-grabNutrition.fillNutritionInfo();
-grabNutrition.createIdTable();*/
+grabNutrition.fillNutritionInfo();*/
+//grabNutrition.createIdTable();
+
+//generateRecipes.generateNames();
 
 function compile(str, path) {
 	return stylus(str)
@@ -74,11 +78,11 @@ app.post('/createAccount', function(req, res) {
 });
 
 app.post('/addIngredient', function(req, res) {
-	login.addIngredient(req, res, dbRef, bcrypt);
+	login.addIngredient(req, res, dbRef);
 });
 
 app.use(function(req, res) {
 	res.status(404).render('404');
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000)

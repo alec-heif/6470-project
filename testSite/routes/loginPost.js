@@ -33,8 +33,48 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 	});
 }
 
-exports.addIngredient = function(req, res) {
-	var ingredients = dbRef.child('INGREDIENTS');
+exports.addIngredient = function(req, res, dbRef) {
+	var ingRef = dbRef.child('INGREDIENT_NAMES/' + req.body.ingredient.toLowerCase());
+	var data = {};
+	ingRef.once('value', function(snapshot) {
+		if(snapshot.val() === null) {
+			res.send({errors: 'Invalid ingredient name'});
+			return;
+		}
+		var ingredient = snapshot.val();
+		data.name = req.body.ingredient;
+		try {
+			data.calories = ingredient.calories;
+		}
+		catch(err) {
+			data.calories = "Unknown"
+		}
+		try {
+			data.id = ingredient.id;
+		}
+		catch(err) {
+			data.id = -1;
+		}
+		try {
+			data.recipes = ingredient.recipes;
+		}
+		catch(err) {
+			data.recipes = [];
+		}
+		try {
+			data.quantity = ingredient.portions.amount;
+		}
+		catch(err) {
+			data.quantity = 1;
+		}
+		try {
+			data.unit = ingredient.portions.unit;
+		}
+		catch(err) {
+			data.unit = "unit";
+		}
+		res.send(data);
+	})
 }
 
 exports.createAccount = function (req, res, dbRef, bcrypt) {

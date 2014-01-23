@@ -141,14 +141,14 @@ module.exports.createIdTable = function createIdTable() {
 	    var output = {};
 	    // parse the file from a string into an object
 	    var foods = JSON.parse(data);
-
 	    var element = {};
 	    foods.forEach(function(curr,i) {
+	    	element = {};
 	    	element.calories = curr.calories;
 	    	element.protein = curr.protein;
 	    	element.fat = curr.fat;
 	    	element.carbs = curr.carbs;
-	    	element.id = i;
+	    	element.id = curr.id;
 	    	element.overall_id = curr.overall_id;
 	    	element.portions = curr.portions;
 	    	output[curr.name] = element;

@@ -7,6 +7,7 @@ DATABASE
 				$recipe_id_1 -> int (foreign key)
 				$recipe_id_2 -> int
 				...
+			**********TODO LATER*******
 			recipes_cooked:
 				$recipe_id_1 -> int
 					times_cooked:
@@ -29,6 +30,7 @@ DATABASE
 						value:
 							$value -> float
 				...
+			********END TODO LATER********
 		$email_address_2 -> String
 			password:
 				$password_2

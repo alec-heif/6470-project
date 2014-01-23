@@ -46,17 +46,19 @@ block append content
 				.col-md-10.col-md-offset-1
 					.entered_ingredients
 						.row
-							.col-md-1#quantity
-							.col-md-1#plusSign
-							.col-md-8#ingredientName
-							.col-md-2#calories
+							#ingredientInfo
+								.col-md-4#quantity
+								.col-md-8#ingredientName
 					form#ingredientForm
 						.input-group.add-ingredient
-							input.ing_typeahead.form-control#addIngredient(type='text', placeholder="What's Cooking?", autocomplete="off")
+							input.ing_typeahead.form-control#addIngredient(type='text', placeholder="What's Cooking?", autocomplete="off", name='ingredient')
 							span.input-group-btn
 								button.btn.btn-warning(type='submit') Use Ingredient
 					.top-buffer-small
 					.top-buffer-small
+					.recipes_returned
+						.recipeHeader
+						.nameOfRecipe
 					.call-to-action
 						.row.text-center
 							.col-md-4
@@ -79,6 +81,8 @@ block append content
 			.top-buffer-large
 			.top-buffer-large
 	script(src='js/typeahead.min.js')
+	script(src='js/underscore.js')
+	script(src='https://cdn.firebase.com/js/client/1.0.2/firebase.js')
 	script(src='js/index.js')
 
 
