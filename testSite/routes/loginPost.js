@@ -34,7 +34,7 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 }
 
 exports.addIngredient = function(req, res) {
-	var ingredients = dbRef.child('INGREDIENTS')
+	var ingredients = dbRef.child('INGREDIENTS');
 }
 
 exports.createAccount = function (req, res, dbRef, bcrypt) {
@@ -68,7 +68,7 @@ exports.createAccount = function (req, res, dbRef, bcrypt) {
 				req.session.user_id = escaped_email;
 				user.set({'password': hash, recipes_written: [], recipes_cooked: [], });
 				data.success = "Success!";
-				res.send(data);
+				res.render(data);
 			});
 		}
 	});
