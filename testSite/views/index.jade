@@ -3,35 +3,68 @@ block append head
 	link(rel='stylesheet', href='/stylesheets/index.css')
 block append content
 	.jumbotron#countertop
-		.modal.fade#myModal
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-						h3.modal-title.text-center Login or Sign Up!
-					.messages
-					.modal-body.row
-						.loginSide.col-md-6.text-center
-							form#loginAccount(action='/loginAccount', method='POST')
-								#loginUser.form-group
-									input.form-control(name='username', type='text', placeholder='Email')
-									span.help-block
-								#loginPassword.form-group
-									input.form-control(name='password', type='password', placeholder='Password')
-									span.help-block
-								input(type='submit', value='Login', name='button')
-						.createAccountSide.col-md-6.text-center
-							form#createAccount(action='/createAccount', method='POST')
-								#createUser.form-group
-									input.form-control(name='username', type='text', placeholder='Email')
-									span.help-block
-								#createPassword.form-group
-									input.form-control(name='password', type='password', placeholder='Password')
-									span.help-block
-								#createConfirm.form-group
-									input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
-									span.help-block
-								input(type='submit', value='Sign Up', name='button')
+		-if(!user) {
+			.modal.fade#myModal
+				.modal-dialog
+					.modal-content
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+							h3.modal-title.text-center Login or Sign Up!
+						.messages
+						.modal-body.row
+							.loginSide.col-md-6.text-center
+								form#loginAccount(action='/loginAccount', method='POST')
+									#loginUser.form-group
+										input.form-control(name='username', type='text', placeholder='Email')
+										span.help-block
+									#loginPassword.form-group
+										input.form-control(name='password', type='password', placeholder='Password')
+										span.help-block
+									input(type='submit', value='Login', name='button')
+							.createAccountSide.col-md-6.text-center
+								form#createAccount(action='/createAccount', method='POST')
+									#createUser.form-group
+										input.form-control(name='username', type='text', placeholder='Email')
+										span.help-block
+									#createPassword.form-group
+										input.form-control(name='password', type='password', placeholder='Password')
+										span.help-block
+									#createConfirm.form-group
+										input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
+										span.help-block
+									input(type='submit', value='Sign Up', name='button')
+		-} else {
+			.modal.fade#myModal
+				.modal-dialog
+					.modal-content
+						.modal-header
+							button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+							h3.modal-title.text-center Hi #{user}
+						.messages
+						.modal-body.row
+							.loginSide.col-md-6.text-center
+								form#loginAccount(action='/loginAccount', method='POST')
+									#loginUser.form-group
+										input.form-control(name='username', type='text', placeholder='Email')
+										span.help-block
+									#loginPassword.form-group
+										input.form-control(name='password', type='password', placeholder='Password')
+										span.help-block
+									input(type='submit', value='Login', name='button')
+							.createAccountSide.col-md-6.text-center
+								form#createAccount(action='/createAccount', method='POST')
+									#createUser.form-group
+										input.form-control(name='username', type='text', placeholder='Email')
+										span.help-block
+									#createPassword.form-group
+										input.form-control(name='password', type='password', placeholder='Password')
+										span.help-block
+									#createConfirm.form-group
+										input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
+										span.help-block
+									input(type='submit', value='Sign Up', name='button')
+		- }
+
 		.container
 			.col-md-10.col-md-offset-1
 				.row

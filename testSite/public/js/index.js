@@ -55,6 +55,8 @@ function loginProcess(data, status) {
 	else {
 		// if validation is good add success message
 		$('#messages').addClass('alert alert-success').append('<p>' + data.success + '</p>');
+		var profile_url = window.location.protocol + "//" + window.location.host + "/";
+		window.location.href = profile_url;
 	}
 
 }
@@ -86,6 +88,9 @@ function createAccountProcess(data, status) {
 	else {
 		// if validation is good add success message
 		$('#messages').addClass('alert alert-success').append('<p>' + data.success + '</p>');
+		var profile_url = window.location.protocol + "//" + window.location.host + "/";
+		window.location.href = profile_url;
+
 	}
 }
 
@@ -144,6 +149,7 @@ function getRecipes(recipes, curr_ingredients) {
 
 function processRecipes(recipes, curr_ingredients) {
 	$('.nameOfRecipe').html('');
+	$('.recipeHeader').html('');
 	var valid_recipes = getRecipes(recipes, curr_ingredients);
 	var results = {'first': true};
 	for(var i = 0; i < valid_recipes.length; i++) {

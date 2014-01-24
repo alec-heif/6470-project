@@ -28,7 +28,7 @@ grabNutrition.removeInvalidFoods();
 grabNutrition.fillNutritionInfo();*/
 //grabNutrition.createIdTable();
 
-//generateRecipes.generateNames();
+generateRecipes.generateNames();
 
 function compile(str, path) {
 	return stylus(str)
@@ -58,7 +58,12 @@ app.use(express.cookieSession({
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-	res.render('index');
+	if(req.session.userId) {
+		res.render('index', {user: req.session.userId});
+		console.log(req.session.userId);
+	}
+	else
+		res.render('index');
 });
 
 app.get('/profile', function(req, res) {
