@@ -23,12 +23,12 @@ var users = dbRef.child('USERS');
 
 var app = express();
 
-/*grabNutrition.grabNutrition();
-grabNutrition.removeInvalidFoods();
-grabNutrition.fillNutritionInfo();*/
+//grabNutrition.grabNutrition();
+//grabNutrition.removeInvalidFoods();
+//grabNutrition.fillNutritionInfo();
 //grabNutrition.createIdTable();
 
-generateRecipes.generateNames();
+//generateRecipes.generateNames();
 
 function compile(str, path) {
 	return stylus(str)

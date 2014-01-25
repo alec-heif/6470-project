@@ -19,10 +19,14 @@ module.exports.generateNames = function generateNames() {
 		var nameRef = dbRef.child('INGREDIENT_NAMES');
 		nameRef.once('value', function(nameSnap) {
 			var ing_names = nameSnap.val();
+			var ing_ids = {};
 			var ingredients = Object.keys(JSON.parse(data));
 			for(var a = 0; a < ingredients.length; a++) {
 				var ng = ingredients[a];
 				ing_names[ng]['recipes'] = [];
+				var c_id = ing_names[ng].id;
+				ing_ids[c_id] = ng;
+				console.log(c_id);
 			}
 			var linker = ['with', 'and', 'in', 'served with', 'topped with', 'drizzled over', 'caked in', 'hinted with', 'dashed with', 'covered in', 'paired with'];
 			var adjective = [
@@ -150,6 +154,8 @@ module.exports.generateNames = function generateNames() {
 			console.log('names set');
 			var recipesRef = dbRef.child('RECIPES');
 			recipesRef.set(output);
+			var idsRef = dbRef.child('INGREDIENT_IDS');
+			idsRef.set(ing_ids);
 			console.log('recipes set');
 			fs.writeFile( './resources/generated_recipes.json', JSON.stringify(output, null, 4), function(err){
 			    if ( err ) throw err;

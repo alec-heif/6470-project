@@ -12,7 +12,8 @@ module.exports.grabNutrition = function grabNutrition() {
 		    console.log('ran');
 
 
-		    food_names.forEach(function(curr_name,i) {
+		    for(var i = 0; i < food_names.length; i++) {
+		    	var curr_name = food_names[i];
 		    	var element = {
 		    		name: curr_name
 		    	};
@@ -22,8 +23,7 @@ module.exports.grabNutrition = function grabNutrition() {
 	    		element.id = curr_id;
 	    		output.push(element);
 	    		console.log(i)
-		    });
-
+		    }
 		    fs.writeFile( './resources/combined_table.json', JSON.stringify(output, null, 4), function(err){
 		        if ( err ) throw err;
 		        console.log('ok');
@@ -35,30 +35,31 @@ module.exports.grabNutrition = function grabNutrition() {
 function findName(occurences, food_data, curr_name, i) {
 	var max_length = 10000;
 	var max_index_length = 10000;
-	var curr_id = -1;
-	food_data.forEach(function(curr_val,j) {
+	var final_id = -1;
+	for(var i = 0; i < food_data.length; i++) {
+		curr_val = food_data[i];
+		var index = 0;
 		var count = 0;
 		var possible_name = curr_val.name.toLowerCase();
 		/*if(i===4) {
 			console.log(possible_name);
 			console.log(curr_name);
 		}*/
-		var curr_if = 0;
-		curr_name.forEach(function(curr_word, k) {
-			curr_if = 0;
+		for(var j = 0; j < curr_name.length; j++) {
+			curr_word = curr_name[j];
 			if(possible_name.indexOf(curr_word) !== -1) {
 				count++;
-				curr_if += possible_name.indexOf(curr_word);
+				index += possible_name.indexOf(curr_word);
 			}
-			curr_if /= (count * 1.0);
-		});
-		if(count >= occurences && possible_name.length <= max_length && curr_if <= max_index_length) {
-			max_length = possible_name.length;
-			max_index_length = curr_if;
-			curr_id = j;
+			index /= (count * 1.0);
 		}
-	});
-	if(curr_id === -1) {
+		if(count >= occurences && /*possible_name.length <= max_length &&*/ index <= max_index_length) {
+			//max_length = possible_name.length;
+			max_index_length = index;
+			final_id = i;
+		}
+	}
+	if(final_id === -1) {
 		if(occurences > 1) {
 			return findName(occurences-1, food_data, curr_name);
 		}
@@ -66,7 +67,7 @@ function findName(occurences, food_data, curr_name, i) {
 			return -1;
 		}
 	}
-	return curr_id;
+	return final_id;
 }
 
 module.exports.removeInvalidFoods = function removeInvalidFoods() {
@@ -86,11 +87,12 @@ module.exports.removeInvalidFoods = function removeInvalidFoods() {
 	    		};
 	    		output.push(element);
 	    	}
-	    });
-
-	    fs.writeFile( './resources/combined_valid_table.json', JSON.stringify(output, null, 4), function(err){
-	        if ( err ) throw err;
-	        console.log('ok');
+	    	if(i === foods.length-1) {
+		     	fs.writeFile( './resources/combined_valid_table.json', JSON.stringify(output, null, 4), function(err){
+		        	if ( err ) throw err;
+		        	console.log('ok');
+		    	});
+	    	}
 	    });
 	});
 }
@@ -116,18 +118,25 @@ module.exports.fillNutritionInfo = function fillNutritionInfo() {
 		    	};
 
 	    		var match = food_data[curr_name.id];
-	    		element.calories = match.calories;
 	    		element.protein = match.protein;
 	    		element.fat = match.fat;
 	    		element.carbs = match.carbs;
-	    		element.portions = match.portions[0];
+	    		if(match.portions[0]) {
+	    			element.portions = match.portions[0];
+	    			element.calories = Math.floor(match.calories * (match.portions[0].grams / 100.0));
+	    		}
+	    		else {
+	    			element.portions = {"amount": 1, "unit": "serving", "grams": 100};
+	    			element.calories = match.calories;
+	    		}
 	    		element.overall_id = curr_name.id;
 	    		output.push(element);
-		    });
-
-		    fs.writeFile( './resources/final_table.json', JSON.stringify(output, null, 4), function(err){
-		        if ( err ) throw err;
-		        console.log('ok');
+	    		if(i === food_names.length - 1) {
+	    			fs.writeFile( './resources/final_table.json', JSON.stringify(output, null, 4), function(err){
+		       			if ( err ) throw err;
+		        		console.log('ok');
+		   		 	});
+	    		}
 		    });
 		});    
 	});
@@ -152,11 +161,12 @@ module.exports.createIdTable = function createIdTable() {
 	    	element.overall_id = curr.overall_id;
 	    	element.portions = curr.portions;
 	    	output[curr.name] = element;
-	    });
-
-	    fs.writeFile( './resources/name_table.json', JSON.stringify(output, null, 4), function(err){
-	        if ( err ) throw err;
-	        console.log('ok');
+	    	if(i === foods.length - 1) {
+			    fs.writeFile( './resources/name_table.json', JSON.stringify(output, null, 4), function(err){
+	        		if ( err ) throw err;
+	        		console.log('ok');
+	    		});
+	    	}
 	    });
 	});
 }

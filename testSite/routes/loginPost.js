@@ -33,6 +33,10 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 	});
 }
 
+exports.organizeRecipes = function organizeRecipes(recipes, curr_ingredients) {
+
+}
+
 exports.addIngredient = function(req, res, dbRef) {
 	var ingRef = dbRef.child('INGREDIENT_NAMES/' + req.body.ingredient.toLowerCase());
 	var data = {};
