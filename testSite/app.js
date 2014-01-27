@@ -7,7 +7,8 @@ var express = require('express'),
 	grunt = require('grunt'),
 	firebase = require('firebase'),
 	bcrypt = require('bcrypt'),
-	validator = require('validator');
+	validator = require('validator'),
+	http = require('http');
 
 var index = require('./routes/indexController');
 var login = require('./routes/loginPost');
@@ -22,6 +23,9 @@ var dbRef = new firebase('https://whatsinmyfridge.firebaseIO.com/');
 var users = dbRef.child('USERS');
 
 var app = express();
+var server = http.createServer(app);
+
+var io = require('socket.io').listen(server);
 
 //grabNutrition.grabNutrition();
 //grabNutrition.removeInvalidFoods();
@@ -90,4 +94,4 @@ app.use(function(req, res) {
 	res.status(404).render('404');
 });
 
-app.listen(process.env.PORT || 3000)
+server.listen(process.env.PORT || 3000)

@@ -39,7 +39,8 @@ block append content
 					.modal-content
 						.modal-header
 							button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-							h3.modal-title.text-center Hi #{user}
+							h3.modal-title.text-center Hi 
+								.user-name 
 						.messages
 						.modal-body.row
 							.loginSide.col-md-6.text-center
@@ -116,6 +117,7 @@ block append content
 	script(src='js/typeahead.min.js')
 	script(src='js/underscore.js')
 	script(src='https://cdn.firebase.com/js/client/1.0.2/firebase.js')
+	script(src='/socket.io/socket.io.js')
 	script(src='js/index.js')
 
 

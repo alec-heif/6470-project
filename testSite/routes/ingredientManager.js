@@ -1,0 +1,1 @@
+exports.searchIngredient = function (req, res, )

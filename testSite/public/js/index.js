@@ -1,3 +1,5 @@
+entered_ingredients = {};
+possible_recipes = [];
 $(document).ready(function(req, res) {
    $('.ing_typeahead').typeahead({                                
 		name: 'ingredients',                                                          
@@ -94,8 +96,6 @@ function createAccountProcess(data, status) {
 	}
 }
 
-var curr_ingredients = {};
-recipes = [];
 function addIngredient(data, status) {
 	$('#addIngredient').val('').typeahead('setQuery', '');
 	if(!data.errors) {
@@ -172,6 +172,7 @@ function processRecipes(recipes, curr_ingredients) {
 }
 
 $(document).ready(function(req, res) {
+	var socket = io.connect('http://localhost');
 	$('#loginAccount').submit(function(e) {
 		e.preventDefault();
 		var input = $(this).serialize();
@@ -185,8 +186,11 @@ $(document).ready(function(req, res) {
 	});
 	$('#ingredientForm').submit(function(e) {
 		e.preventDefault();
-		var input = $(this).serialize();
-		$.post('/addIngredient', input, addIngredient);
+		var input = $('#addIngredient').val();
+		socket.emit('addIngredient', {'input': input});
+		$('#addIngredient').val('').typeahead('setQuery', '');
+
+		//$.post('/addIngredient', input, addIngredient);
 	})
 });
 
