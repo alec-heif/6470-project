@@ -1,0 +1,75 @@
+extends layout
+block append head
+	link(rel='stylesheet', href='/stylesheets/recipesubmission.css')
+	link(rel='stylesheet', href='/stylesheets/index.css')
+block append content
+	.jumbotron#countertop
+		.col-md-3
+		.container.submission.col-md-8.col-md-offset-2
+			a.btn.btn-warning.goBack(href='/') Return to Recipe Search!
+			.span8.offset2
+				h1.recipeNameOutput New Recipe
+				h3 Fill in the fields below to create a recipe for the world to use!
+			.top-buffer-small
+			h2.info Part 1: General Info
+			form.form-horizontal#recipePart1(role="form")
+				.form-group
+					.row
+						label.col-md-3.form-label(for="recipeName") Recipe Name
+						.col-md-9.form-entry
+							input.general_form.ing-name.form-control#recipeNameInput(type='text' placeholder = "What's Your Creation Called?" name="recipeName")
+					.row
+						label.col-md-3.form-label(for="peopleServed") People Served
+						.col-md-3
+							.peopleServed.unselectable
+								span.glyphicon.glyphicon-minus-sign.quantityChanger#peopleServedSubtractor
+								span#peopleServedResult
+									span#servedCount 1 
+									span#servedUnit person
+								span.glyphicon.glyphicon-plus-sign.quantityChanger#peopleServedAdder
+					.row
+						label.col-md-3.form-label(for="cookingTime") Cooking Time
+						.col-md-3
+							.input-group-btn
+								button.btn-default.dropdown-toggle(type="button" data-toggle="dropdown") 
+									span.newText Cooking Time?
+									span.caret
+								ul.dropdown-menu
+									li
+										a(href="#") Short (10-20 minutes)
+									li
+										a(href="#") Medium (20-40 minutes)
+									li
+										a(href="#") Long (40-60 minutes)
+									li 
+										a(href="#") Very Long (Over an hour)
+								input.category#time(type="hidden" name="category")						
+					.row
+						.col-md-10
+							textarea.recipe-summary(placeholder= "Add a Brief Summary of the Recipe" id="summary")
+			.row
+				.span8.offset2
+					h2 Part 2: Enter the Ingredients
+					.entered_ingredients
+						.row
+							#ingredientInfo
+								.col-md-5#quantity
+								.col-md-7#ingredientName
+					form#ingredientForm
+						.input-group.add-ingredient
+							input.ing_typeahead.form-control#addIngredient(type='text', placeholder="What does the recipe need?", autocomplete="off", name='ingredient')
+							span.input-group-btn
+								button.btn.btn-warning(type='submit') Add Ingredient
+			.top-buffer-small
+			h2 Part 3: Enter Steps
+			form#stepForm
+				.steps
+					textarea.recipe-summary(placeholder= "Step 1" name="step1" id="step1")
+				.nextStep
+					button.btn.btn-warning#addStep Add Another Step
+				button.btn.btn-warning#submitRecipe(type='submit') Submit Recipe!
+
+				.top-buffer-large
+	script(src='js/typeahead.min.js')
+	script(src="/socket.io/socket.io.js")
+	script(src='js/recipesubmission.js')

@@ -14,9 +14,9 @@ var index = require('./routes/indexController');
 var login = require('./routes/loginPost');
 var socketHandler = require('./routes/socketHandler');
 
-var grabNutrition = require('./resources/grabNutrition.js');
-var processFoods = require('./resources/processFood.js');
-var generateRecipes = require('./resources/my_generator_algorithm.js');
+//var grabNutrition = require('./resources/grabNutrition.js');
+//var processFoods = require('./resources/processFood.js');
+//var generateRecipes = require('./resources/my_generator_algorithm.js');
 
 
 var dbRef = new firebase('https://whatsinmyfridge.firebaseIO.com/');
@@ -28,6 +28,10 @@ var server = http.createServer(app);
 
 var io = require('socket.io').listen(server);
 
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
 //grabNutrition.grabNutrition();
 //grabNutrition.removeInvalidFoods();
 //grabNutrition.fillNutritionInfo();
@@ -63,9 +67,9 @@ app.use(express.cookieSession({
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
+	console.log("USERNAME: " + req.session.userId);
 	if(req.session.userId) {
-		res.render('index', {user: req.session.userId});
-		console.log(req.session.userId);
+		res.render('index', {'user': req.session.userId});
 	}
 	else
 		res.render('index');
@@ -75,8 +79,20 @@ app.get('/profile', function(req, res) {
 	res.render('profile');
 });
 
+app.get('/password', function(req, res) {
+	if(req.session.userId)
+		res.render('password');
+	else
+		res.redirect('/');
+});
+
 app.get('/login', function(req, res) {
 	res.render('login');
+});
+
+app.get('/logout', function(req, res) {
+	req.session.userId = null;
+	res.redirect('/');
 });
 
 app.post('/loginAccount', function(req, res) {
@@ -90,6 +106,10 @@ app.post('/createAccount', function(req, res) {
 app.post('/addIngredient', function(req, res) {
 	login.addIngredient(req, res, dbRef);
 });
+
+app.get('/submit', function(req, res) {
+	res.render('recipesubmission');
+})
 
 app.use(function(req, res) {
 	res.status(404).render('404');

@@ -55,10 +55,15 @@ function loginProcess(data, status) {
 	else {
 		// if validation is good add success message
 		$('#messages').addClass('alert alert-success').append('<p>' + data.success + '</p>');
+		document.cookie = data.username;
 		var profile_url = window.location.protocol + "//" + window.location.host + "/";
 		window.location.href = profile_url;
 	}
 
+}
+
+function unEscapeEmailAddress(email) {
+  return email.toLowerCase().replace(',', '/\./g');
 }
 
 function createAccountProcess(data, status) {
@@ -101,8 +106,8 @@ function addIngredient(data, status) {
 			increaseCount(data);
 		}
 		else {
-			$('#quantity').append('<p>' + 
-				'<span class="glyphicon glyphicon-plus-sign quantityAdder" id="' + data.id + 'add">' + 
+			$('#quantity').append('<p class="unselectable">' + 
+				'<span class="glyphicon glyphicon-plus-sign quantityAdder unselectable" id="' + data.id + 'add">' + 
 				'</span>' + ' <span id="' + data.id + 'quantity">1</span> ' + data.unit + '</p>');
 			$('#ingredientName').append('<p>' + capitalize(data.name) + ': ' + data.calories + ' calories</p>');
 			curr_ingredients[data.name.toLowerCase()] = {id: data.id, quantity: 1, recipes: data.recipes};
@@ -336,7 +341,7 @@ $(document).ready(function(req, res) {
 	      '</div>' + 
 	      '<div class="messages"></div>' + 
 	      '<div class="modal-body">' + 
-	      	'<h2>Ingredients:</h2>' + 
+	      	'<h2 id="bitch">Ingredients:</h2>' + 
 	      	'<div class="ingredients">';
 	      	for(var i = 0; i < recipe.ingredients.length; i++) {
 	      		result += "<p>" + capitalize(recipe.ingredients[i]) + "</p>";

@@ -36,4 +36,16 @@ exports.handle = function(socket, dbRef) {
 			});
 		});
 	});
+
+	socket.on('addRecipe', function(data) {
+		console.log('Started getting recipe info');
+		var childRef = dbRef.child('RECIPES');
+		childRef.on('value', function(snapshot) {
+			console.log('dicks');
+			var id = snapshot.val();
+			console.log(id);
+		})
+
+
+	});
 }

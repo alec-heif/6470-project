@@ -19,8 +19,9 @@ exports.loginAuth = function (req, res, dbRef, bcrypt) {
 		else {
 			bcrypt.compare(password, snapshot.val().password, function(err, result) {
 				if(result) {
-					req.session.user_id = escaped_email;
-    				data.success = "Success!";
+					req.session.userId = escaped_email;
+					data.success = "Success!";
+					data.username = escaped_email;
 				}
 				else {
 					console.log('pass fail');
@@ -109,10 +110,11 @@ exports.createAccount = function (req, res, dbRef, bcrypt) {
 		}
 		else {
 			bcrypt.hash(password, 8, function(err, hash) {
-				req.session.user_id = escaped_email;
-				user.set({'password': hash, recipes_written: [], recipes_cooked: [], });
+				req.session.userId = escaped_email;
+				user.set({'password': hash, recipes_written: [], recipes_cooked: []});
 				data.success = "Success!";
-				res.render(data);
+				data.username = escaped_email;
+				res.send(data);
 			});
 		}
 	});

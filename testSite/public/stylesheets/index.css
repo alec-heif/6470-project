@@ -138,6 +138,10 @@
 .jumbotron#countertop .container {
   overflow: hidden;
 }
+.submitRecipe,
+.loginButton {
+  font-size: 24px;
+}
 .btn-large {
   background-color: #008000;
 }
@@ -164,6 +168,11 @@
   margin-bottom: 0px;
   line-height: 30px;
 }
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 .add-ingredient {
   padding-left: 0px;
   padding-right: 0px;
@@ -175,16 +184,21 @@
   padding-top: 16px;
 }
 .add-ingredient .input-group-btn .btn {
-  font-size: 24px;
   height: 64px;
+  font-size: 24px;
+}
+.btn {
   background-color: #2c4762;
   border-color: #2c4762;
   background-image: none;
   box-shadow: none;
 }
-.add-ingredient .input-group-btn .btn:hover {
+.btn:hover {
   background-color: #e38d13;
   background-image: none;
+}
+.accountSettings {
+  font-size: 20px;
 }
 .entered_ingredients {
   color: #f9f3d1;

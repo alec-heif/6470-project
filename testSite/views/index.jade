@@ -3,13 +3,14 @@ block append head
 	link(rel='stylesheet', href='/stylesheets/index.css')
 block append content
 	.jumbotron#countertop
+
 		-if(!user) {
 			.modal.fade#myModal
 				.modal-dialog
 					.modal-content
 						.modal-header
 							button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-							h3.modal-title.text-center Login or Sign Up!
+							h3.modal-title.text-center Login or Sign Up
 						.messages
 						.modal-body.row
 							.loginSide.col-md-6.text-center
@@ -33,49 +34,47 @@ block append content
 										input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
 										span.help-block
 									input(type='submit', value='Sign Up', name='button')
-		-} else {
+		- } else {
 			.modal.fade#myModal
 				.modal-dialog
 					.modal-content
-						.modal-header
-							button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
-							h3.modal-title.text-center Hi 
-								.user-name 
-						.messages
-						.modal-body.row
-							.loginSide.col-md-6.text-center
-								form#loginAccount(action='/loginAccount', method='POST')
-									#loginUser.form-group
-										input.form-control(name='username', type='text', placeholder='Email')
-										span.help-block
-									#loginPassword.form-group
-										input.form-control(name='password', type='password', placeholder='Password')
-										span.help-block
-									input(type='submit', value='Login', name='button')
-							.createAccountSide.col-md-6.text-center
-								form#createAccount(action='/createAccount', method='POST')
-									#createUser.form-group
-										input.form-control(name='username', type='text', placeholder='Email')
-										span.help-block
-									#createPassword.form-group
-										input.form-control(name='password', type='password', placeholder='Password')
-										span.help-block
-									#createConfirm.form-group
-										input.form-control(name='confirmPassword', type='password', placeholder='Confirm Password')
-										span.help-block
-									input(type='submit', value='Sign Up', name='button')
+						.modal-body
+							p You've already signed up! Thanks!
 		- }
-
 		.container
 			.col-md-10.col-md-offset-1
 				.row
-					.col-md-6.col-md-offset-3.text-center
-						.header.text-center
-							h1.text-center EasyMake
-							h2.text-center Healthy cooking made easy
+					- if(user) {
+					.btn-group.col-md-3
+						button.btn.btn-warning.accountSettings.dropdown-toggle(type='button', data-toggle='dropdown') Welcome, #{user.replace(',', '.')}!
+							span.caret
+						ul.dropdown-menu(role='menu')
+							//li
+							//	a(href='#') View Recipes
+							//li
+							//	a(href='#') Change Password
+							li
+								a(href='/logout') Logout
+					-}
+					-if(user) {
+						.col-md-6.text-center
+							.header.text-center
+								h1.text-center EasyMake
+								h2.text-center Healthy cooking made easy
+					- } else {
+						.col-md-6.col-md-offset-3.text-center
+							.header.text-center
+								h1.text-center EasyMake
+								h2.text-center Healthy cooking made easy
+					- }
 					.col-md-3
 						.login
-							a.btn.btn-warning(href='#myModal', data-toggle = 'modal') Login/Create Account
+							-if(user) {
+								a.btn.btn-warning.submitRecipe(href='/submit') Submit Recipe!
+							-} else {
+								a.btn.btn-warning.loginButton(href='#myModal', data-toggle = 'modal') Login/Create Account
+							- }
+
 			.results_container
 				.col-md-10.col-md-offset-1
 					.entered_ingredients
