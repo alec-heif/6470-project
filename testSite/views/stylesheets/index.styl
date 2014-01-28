@@ -1,5 +1,9 @@
 font-color = #f9f3d1
 font-size = 24px
+a.list-group-item
+    //color white
+    //background-color transparent
+    //border-color transparent
 .header
     color font-color
     h2
@@ -171,24 +175,23 @@ font-size = 24px
 .entered_ingredients
     color font-color
     font-size 20px
-    .ingredient_quantity
-        padding-right 25px
+    //.ingredient_quantity
     .quantityAdder
         cursor: pointer;
 .recipes_returned
-    color font-color
-    font-size 30px
-    text-align center
-
-
-
-
+    h2
+        color font-color
+        font-size 30px
+        text-align center
+    a.list-group-item
+        color font-color
+        font-size 20px
+        text-align center
+        background-color transparent
+        &:hover
+            background-color black
 .call-to-action
     color: font-color
-a.list-group-item
-    color white
-    background-color transparent
-    border-color transparent
 body
     min-height 100%
     background url('../images/wood2.jpg') no-repeat center center fixed

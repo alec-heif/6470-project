@@ -12,6 +12,7 @@ var express = require('express'),
 
 var index = require('./routes/indexController');
 var login = require('./routes/loginPost');
+var socketHandler = require('./routes/socketHandler');
 
 var grabNutrition = require('./resources/grabNutrition.js');
 var processFoods = require('./resources/processFood.js');
@@ -92,6 +93,10 @@ app.post('/addIngredient', function(req, res) {
 
 app.use(function(req, res) {
 	res.status(404).render('404');
+});
+
+io.sockets.on('connection', function(socket) {
+	socketHandler.handle(socket, dbRef);
 });
 
 server.listen(process.env.PORT || 3000)

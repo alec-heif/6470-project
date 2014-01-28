@@ -1,5 +1,3 @@
-entered_ingredients = {};
-possible_recipes = [];
 $(document).ready(function(req, res) {
    $('.ing_typeahead').typeahead({                                
 		name: 'ingredients',                                                          
@@ -120,13 +118,6 @@ function addIngredient(data, status) {
 	}
 }
 
-function increaseCount(data) {
-	var currCount = parseInt($('#' + data.id + 'quantity').html());
-	currCount+=1;
-	curr_ingredients[data.name.toLowerCase()].quantity += 1;
-	$('#' + data.id + 'quantity').html(currCount.toString());
-}
-
 function getRecipes(recipes, curr_ingredients) {
 	console.log(recipes);
 	console.log(curr_ingredients);
@@ -173,6 +164,9 @@ function processRecipes(recipes, curr_ingredients) {
 
 $(document).ready(function(req, res) {
 	var socket = io.connect('http://localhost');
+	var enteredIngredients = {};
+	var recipeIdsToCloseness = {};
+	var closenessToRecipeGroupings = {};
 	$('#loginAccount').submit(function(e) {
 		e.preventDefault();
 		var input = $(this).serialize();
@@ -190,8 +184,195 @@ $(document).ready(function(req, res) {
 		socket.emit('addIngredient', {'input': input});
 		$('#addIngredient').val('').typeahead('setQuery', '');
 
-		//$.post('/addIngredient', input, addIngredient);
-	})
+	});
+
+	function increaseCount(data) {
+		var currCount = parseInt($('#' + data.id + 'quantity').html());
+		currCount+=1;
+		var currIngredient = enteredIngredients[data.name.toLowerCase()]
+		currIngredient.quantity += 1;
+		$('#' + data.id + 'quantity').html(currCount.toString());
+		$('#' + data.id + 'calories').html(currCount * currIngredient.calories);
+	}
+
+	function decrementCloseness(currRecipeId) {
+		var closeness = recipeIdsToCloseness[currRecipeId];
+		var currRecipe = closenessToRecipeGroupings[closeness][currRecipeId];
+		if(closeness > 0) {
+			var copy = _.clone(currRecipe);
+			try {
+				//copy recipe to new (decremented) bucket
+				closenessToRecipeGroupings[closeness-1][currRecipeId] = copy;
+				//delete recipe from current bucket
+				//EXTREMELY IMPORTANT: do not make this a variable, delete ONLY	 
+				//works with the actual instance NOT even a variable referencing it.
+				delete closenessToRecipeGroupings[closeness][currRecipeId];
+				console.log(closenessToRecipeGroupings[closeness][currRecipeId]);
+			}
+			catch(err) {
+
+				//decremented bucket not initialized
+				closenessToRecipeGroupings[closeness-1] = {};
+				closenessToRecipeGroupings[closeness-1][currRecipeId] = copy;
+				//delete recipe from current bucket
+				delete closenessToRecipeGroupings[closeness][currRecipeId];
+			}
+		}
+		else {
+			//also should never happen but whatevs
+			console.log("Closeness of 0 tried to lower");
+		}
+	}
+
+	function addRecipes(recipes) {
+		var newRecipes = [];
+		for(var i = 0; i < recipes.length; i++) {
+			var currRecipeId = recipes[i];
+			if(recipeIdsToCloseness[currRecipeId]) {
+				//Recipe matches at least one other ingredient, decrement its closeness
+				decrementCloseness(currRecipeId);
+			}
+			else {
+				//Recipe is new, get full info for it.
+				newRecipes.push(currRecipeId);
+			}
+		}
+		console.log("ADDED RECIPES");
+		socket.emit('newRecipes', newRecipes);
+	}
+
+	socket.on('recipeResponse', function(data) {
+		console.log('got recipes');
+		for(var i = 0; i < data.length; i++) {
+			var curr = data[i];
+			if(recipeIdsToCloseness[curr.id]) {
+				//Recipe got added during async, just decrement it
+				decrementCloseness(curr.id);
+			}
+			else {
+				//Recipe was still not added, so add it and assume it matches nothing
+				var closeness = curr.ingredients.length - 1;
+				if(closeness >= 0) {
+					recipeIdsToCloseness[curr.id] = closeness;
+					try {
+						closenessToRecipeGroupings[closeness][curr.id] = curr;
+					}
+					catch(err) {
+						//recipes not initialized
+						closenessToRecipeGroupings[closeness] = {};
+						closenessToRecipeGroupings[closeness][curr.id] = curr;
+					}
+				}
+				else {
+					//should never happen
+					console.log("Recipe with 0 ingredients");
+				}
+			}
+		}
+		console.log("RESPONDED TO RECIPES");
+		computeDisplayedRecipes();
+	});
+
+	function computeDisplayedRecipes() {
+		var closeness = 0;
+		var count = 0;
+		var result = [];
+		while(count < 30) {
+			if(closeness >= closenessToRecipeGroupings.length) {
+				break;
+			}
+			else if(closenessToRecipeGroupings[closeness]) {
+				result[closeness] = [];
+				var level = closenessToRecipeGroupings[closeness];
+				var keys = Object.keys(level);
+				for(var i = 0; i < keys.length; i++) {
+					var currKey = keys[i];
+					if(count >= 30) {
+						break;
+					}
+					else {
+						result[closeness].push(level[currKey]);
+						count++;
+					}
+				}
+				closeness++;
+			}
+			else {
+				//empty bucket, move on
+				closeness++;
+				continue;
+			}
+		}
+		console.log("FOUND DISPLAYED RECIPES");
+		displayRecipes(result);
+	}
+
+	function displayRecipes(recipes) {
+		if(recipes.length > 0) {
+			$('.nameOfRecipe').html('');
+			$('.recipeHeader').html('');
+			$('.recipeHeader').append('<h2>Recipes Found!</h2><div class="list-group"');
+			$('.call-to-action').html('');
+			for(var i = 0; i < recipes.length; i++) {
+				var closenessBucket = recipes[i];
+				if(closenessBucket) {
+					for(var j = 0; j < closenessBucket.length; j++) {
+						var curr = closenessBucket[j];
+						$('.nameOfRecipe').append('<a class="list-group-item" data-toggle = "modal" href="#recipe' + curr.id + 'modal" >' + i + ' ingredients in common: ' + capitalize(curr.name) + '</a>');
+						$('.nameOfRecipe').append(getRecipeModal(curr));
+					}
+				}
+			}
+		}
+	}
+
+	function getRecipeModal(recipe) {
+		var result = '<div id="recipe' + recipe.id + 'modal" class="modal fade">' + 
+	  '<div class="modal-dialog">' + 
+	    '<div class="modal-content">' + 
+	      '<div class="modal-header">' + 
+	        '<button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>' + 
+	        '<h3 class="modal-title text-center">' + capitalize(recipe.name) + '</h3>' + 
+	      '</div>' + 
+	      '<div class="messages"></div>' + 
+	      '<div class="modal-body">' + 
+	      	'<h2>Ingredients:</h2>' + 
+	      	'<div class="ingredients">';
+	      	for(var i = 0; i < recipe.ingredients.length; i++) {
+	      		result += "<p>" + capitalize(recipe.ingredients[i]) + "</p>";
+	      	}
+	      	result += '</div>' + 
+	      '</div>' + 
+	    '</div>' + 
+	'</div>';
+	return result;
+	}
+
+	socket.on('ingredientResponse', function(data) {
+		if(!data.errors) {
+			if(enteredIngredients[data.name.toLowerCase()]) {
+				increaseCount(data);
+			}
+			else {
+				$('#quantity').append('<p>' + 
+					'<span class="glyphicon glyphicon-plus-sign quantityAdder" id="' + data.id + 'add">' + 
+					'</span>' + ' <span id="' + data.id + 'quantity">1</span> ' + data.portions.unit + '</p>');
+				$('#ingredientName').append('<p>' + capitalize(data.name) + ': ' + 
+					'<span id="' + data.id + 'calories">' + data.calories + '</span>' + 
+					' calories</p>');
+				enteredIngredients[data.name.toLowerCase()] = {id: data.id, quantity: 1, recipes: data.recipes, calories: data.calories};
+				$('#' + data.id + 'add').click(function() {
+					increaseCount(data)
+				});
+				addRecipes(data.recipes);
+				//possible_recipes = _.union(recipes, data.recipes);
+				//processRecipes(recipes, curr_ingredients);
+			}
+		}
+		else {
+			alert(data.errors);
+		}
+	});
 });
 
 
